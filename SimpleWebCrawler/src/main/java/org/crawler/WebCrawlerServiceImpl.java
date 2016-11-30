@@ -21,18 +21,39 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 				return;// if you cannot connect the page omit it.
 			}
 
-			Elements links = pageHtml.select("a[href]");
-			for (Element link : links) {
-				String href = link.attr("abs:href");
-				if (href.startsWith(baseUrl)) {
-					// get all links and recursively call the parsePage method
-					parsePage(baseUrl, new Page(href), Optional.ofNullable(processPage), pagesVisitedSoFar);
-				} else if (!processPage.getLinksToExternal().contains(href)) {
-					processPage.getLinksToExternal().add(href);
-				}
-			}
+			findAHrefLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);
+			
+			findImgLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);
+			
+			
 			if (parentPage.isPresent()) {
 				parentPage.get().getLinksToOtherPages().add(processPage);
+			}
+		}
+	}
+
+	private void findAHrefLink(String baseUrl, Page processPage, Set<Page> pagesVisitedSoFar, Document pageHtml) {
+		Elements links = pageHtml.select("a[href]");
+		for (Element link : links) {
+			String href = link.attr("abs:href");
+			if (href.startsWith(baseUrl)) {
+				// get all links and recursively call the parsePage method
+				parsePage(baseUrl, new Page(href), Optional.ofNullable(processPage), pagesVisitedSoFar);
+			} else if (!processPage.getLinksToExternal().contains(href)) {
+				processPage.getLinksToExternal().add(href);
+			}
+		}
+	}
+	
+	private void findImgLink(String baseUrl, Page processPage, Set<Page> pagesVisitedSoFar, Document pageHtml) {
+		Elements links = pageHtml.select("img");
+		for (Element link : links) {
+			String href = link.attr("src");
+			if (href.startsWith(baseUrl)) {
+				// get all links and recursively call the parsePage method
+				parsePage(baseUrl, new Page(href), Optional.ofNullable(processPage), pagesVisitedSoFar);
+			} else if (!processPage.getLinksToExternal().contains(href)) {
+				processPage.getLinksToStaticContent().add(href);
 			}
 		}
 	}

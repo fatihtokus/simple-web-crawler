@@ -37,4 +37,11 @@ public class WebCrawlerServiceImplTest {
 		assertThat(processPage.getLinksToExternal(), hasItem("https://twitter.com/wiprodigital"));
 		assertThat(pagesVisitedSoFar, not(hasItem(new Page("https://twitter.com/wiprodigital"))));	
 	}
+	
+	@Test
+	public void staticContentLinkTest() {
+		assertThat(processPage.getLinksToStaticContent(), hasItem("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"));
+		assertThat(pagesVisitedSoFar, not(hasItem(new Page("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"))));
+	}
+	
 }

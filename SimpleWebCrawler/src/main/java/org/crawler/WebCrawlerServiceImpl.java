@@ -1,14 +1,21 @@
 package org.crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Optional;
 import java.util.Set;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class WebCrawlerServiceImpl implements WebCrawlerService {
+	
+	@Override
 	public void parsePage(String baseUrl, Page processPage, Optional<Page> parentPage, Set<Page> pagesVisitedSoFar) {
 		String url = processPage.getUrl();
 		if (!pagesVisitedSoFar.contains(processPage)) {
@@ -33,6 +40,15 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 		}
 	}
 
+	@Override
+	public void exportToFile(Page rootPage, String filePath) {
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)))) {
+		    writer.write(rootPage.toString());
+		} catch (IOException ex) {
+		    throw new SiteMapCouldNotBeExportedException("Site map could not be exported!");
+		} 
+	}
+	
 	private void findAHrefLink(String baseUrl, Page processPage, Set<Page> pagesVisitedSoFar, Document pageHtml) {
 		Elements links = pageHtml.select("a[href]");
 		for (Element link : links) {

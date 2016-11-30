@@ -5,4 +5,6 @@ import java.util.Set;
 
 public interface WebCrawlerService {
 	public void parsePage(String baseUrl, Page processPage, Optional<Page> parentPage, Set<Page> pagesVisitedSoFar);
+
+	void exportToFile(Page rootPage, String filePath);
 }

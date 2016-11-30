@@ -1,6 +1,5 @@
 package org.crawler;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
 

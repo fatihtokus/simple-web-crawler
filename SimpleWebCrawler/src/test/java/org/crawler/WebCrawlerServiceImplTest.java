@@ -39,9 +39,16 @@ public class WebCrawlerServiceImplTest {
 	}
 	
 	@Test
-	public void staticContentLinkTest() {
+	public void staticContentLinkImgTest() {
 		assertThat(processPage.getLinksToStaticContent(), hasItem("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"));
 		assertThat(pagesVisitedSoFar, not(hasItem(new Page("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"))));
 	}
+	
+	@Test
+	public void staticContentLinkLinkTest() {
+		assertThat(processPage.getLinksToStaticContent(), hasItem("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/uploads/2016/08/Fav_icon_144x144.png"));
+		assertThat(pagesVisitedSoFar, not(hasItem(new Page("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/uploads/2016/08/Fav_icon_144x144.png"))));
+	}
+	
 	
 }

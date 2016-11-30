@@ -23,8 +23,9 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 
 			findAHrefLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);
 			
-			findImgLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);
+			findImgLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);			
 			
+			findLinkLink(baseUrl, processPage, pagesVisitedSoFar, pageHtml);	
 			
 			if (parentPage.isPresent()) {
 				parentPage.get().getLinksToOtherPages().add(processPage);
@@ -52,7 +53,20 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 			if (href.startsWith(baseUrl)) {
 				// get all links and recursively call the parsePage method
 				parsePage(baseUrl, new Page(href), Optional.ofNullable(processPage), pagesVisitedSoFar);
-			} else if (!processPage.getLinksToExternal().contains(href)) {
+			} else if (!processPage.getLinksToStaticContent().contains(href)) {
+				processPage.getLinksToStaticContent().add(href);
+			}
+		}
+	}
+	
+	private void findLinkLink(String baseUrl, Page processPage, Set<Page> pagesVisitedSoFar, Document pageHtml) {
+		Elements links = pageHtml.select("link");
+		for (Element link : links) {
+			String href = link.attr("abs:href");
+			if (href.startsWith(baseUrl)) {
+				// get all links and recursively call the parsePage method
+				parsePage(baseUrl, new Page(href), Optional.ofNullable(processPage), pagesVisitedSoFar);
+			} else if (!processPage.getLinksToStaticContent().contains(href)) {
 				processPage.getLinksToStaticContent().add(href);
 			}
 		}

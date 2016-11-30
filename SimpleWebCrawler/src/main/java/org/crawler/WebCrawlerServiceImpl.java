@@ -15,13 +15,12 @@ import org.jsoup.select.Elements;
 
 public class WebCrawlerServiceImpl implements WebCrawlerService {
 	
-	@Override
 	public void parsePage(String baseUrl, Page processPage, Optional<Page> parentPage, Set<Page> pagesVisitedSoFar) {
 		String url = processPage.getUrl();
 		if (!pagesVisitedSoFar.contains(processPage)) {
 			Document pageHtml;
 			try {
-				pageHtml = Jsoup.connect(url).get();
+				pageHtml = Jsoup.connect(url).timeout(1000).get();
 				// store the page to the set to avoid parsing again
 				pagesVisitedSoFar.add(processPage);
 			} catch (IOException e) {
@@ -40,7 +39,6 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 		}
 	}
 
-	@Override
 	public void exportToFile(Page rootPage, String filePath) {
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)))) {
 		    writer.write(rootPage.toString());

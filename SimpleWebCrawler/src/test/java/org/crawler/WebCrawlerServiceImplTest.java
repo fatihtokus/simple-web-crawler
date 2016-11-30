@@ -29,24 +29,24 @@ public class WebCrawlerServiceImplTest {
 		webCrawlerService.parsePage(url, processPage, Optional.empty(), pagesVisitedSoFar);		
 	}	
 	
-	//@Test
+	@Test
 	public void initialPageTest() {		
 		assertThat(pagesVisitedSoFar, hasItem(new Page("http://wiprodigital.com/")));		
 	}
 	
-	//@Test
+	@Test
 	public void externalLinkTest() {		
 		assertThat(processPage.getLinksToExternal(), hasItem("https://twitter.com/wiprodigital"));
 		assertThat(pagesVisitedSoFar, not(hasItem(new Page("https://twitter.com/wiprodigital"))));	
 	}
 	
-	//@Test
+	@Test
 	public void staticContentLinkImgTest() {
 		assertThat(processPage.getLinksToStaticContent(), hasItem("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"));
 		assertThat(pagesVisitedSoFar, not(hasItem(new Page("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/themes/wiprodigital/images/wdlogo.png"))));
 	}
 	
-	//@Test
+	@Test
 	public void staticContentLinkLinkTest() {
 		assertThat(processPage.getLinksToStaticContent(), hasItem("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/uploads/2016/08/Fav_icon_144x144.png"));
 		assertThat(pagesVisitedSoFar, not(hasItem(new Page("http://17776-presscdn-0-6.pagely.netdna-cdn.com/wp-content/uploads/2016/08/Fav_icon_144x144.png"))));

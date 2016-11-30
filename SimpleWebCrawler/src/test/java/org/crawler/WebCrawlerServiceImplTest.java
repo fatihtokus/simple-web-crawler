@@ -10,18 +10,12 @@ import java.util.Set;
 import org.junit.Test;
 public class WebCrawlerServiceImplTest {
 	@Test
-	public void initialPageTest() {
-		
+	public void initialPageTest() {		
 		WebCrawlerService webCrawlerService =  new WebCrawlerServiceImpl();
 		String url= "http://wiprodigital.com/";
-
 		Set<Page> pageSetSoFar = new HashSet<Page>();
 		Page processPage = new Page(url);
-		webCrawlerService.parsePage(url, processPage, Optional.empty(), pageSetSoFar);
-		pageSetSoFar.stream().forEach(page -> {			
-			System.out.println("- "+ page.getUrl());			
-		});		
-		assertThat(pageSetSoFar, hasItem(new Page("http://wiprodigital.com/")));
-		
+		webCrawlerService.parsePage(url, processPage, Optional.empty(), pageSetSoFar);	
+		assertThat(pageSetSoFar, hasItem(new Page("http://wiprodigital.com/")));		
 	}
 }
